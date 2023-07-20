@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>173843403770-posbgok24g2h003775fd8ktj7gi6n6cc.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.173843403770-posbgok24g2h003775fd8ktj7gi6n6cc</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>173843403770-h6tlcp4tdofe5s3krkrtunnj13epjpir.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB-peNc9eh0RvdXSU-IO7cj_pCD0EzR2OA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>173843403770</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.app.mukabbirSchools</string>
+	<key>PROJECT_ID</key>
+	<string>mukabbir-5e917</string>
+	<key>STORAGE_BUCKET</key>
+	<string>mukabbir-5e917.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:173843403770:ios:7eb58751271a16a5deca43</string>
+</dict>
+</plist>

@@ -1,0 +1,57 @@
+{
+  "status": 200,
+  "type": true,
+  "notifications": [
+    {
+      "id": 62,
+      "title": "\"Summer Task\"",
+      "description": "Kindly collect the summer task of your ward on Monday 5th July, 2021 from admin office.\r\nHappy Holidays...!\r\nRegards,\r\nMukabbir Schools Management"
+    },
+    {
+      "id": 61,
+      "title": "\"Summer Vacations\"",
+      "description": "It is to inform you that in accordance of summer vacation the Mukabbir School Okara Campus will remain close from Thursday 1st July 2021 till Sunday 1st August 2021. It will resume from Monday 2nd August 2021.\r\nNote:Collect the summer task of your ward on"
+    },
+    {
+      "id": 60,
+      "title": "\"Father's Day Celebrations\"",
+      "description": "Respected Parents! We are celebrating Father's week, which will end till next Friday. Kindly share your feelings and thoughts through making a card, cook something exclusively for your father, share a video, dedicate a poem, to your father which will make"
+    },
+    {
+      "id": 59,
+      "title": "\"Summer Gala Appreciation\"",
+      "description": "A.O.A! Respected parents, we are very much thankful for your co operation during SUMMER GALA.The presence of our students makes our school more beautiful and alluring. Likewise the participation of parents is a compelling source for the staff to do much b"
+    },
+    {
+      "id": 57,
+      "title": "\"SUMMER GALA\"",
+      "description": "MONDAY:FRUITS DAY(Students can come in colorful dresses and they can bring any summer fruit along them).\r\nTUESDAY:ICE-CREAM+WATER DAY(Students should bring an amount not exceeding than 100rs, to buy an ice cream.They can also bring their swimming pools)."
+    },
+    {
+      "id": 56,
+      "title": "\"Parent Teacher Meeting\"",
+      "description": "Parent Teacher Meeting is going to be held on Saturday, 19th June, 2021. Timings are as follows;\r\n08:30am–09:30am (Play Group), 09:30am-10:30am (Nursery), 10:30am–11:30 am(Prep)."
+    },
+    {
+      "id": 55,
+      "title": "\"New School Timings\"",
+      "description": "The new school timings from  Monday, 14th June 2021 will be as follows;\r\nMonday till Friday (Early Year I, II, III ) 07:30 am till 11:00 am."
+    },
+    {
+      "id": 54,
+      "title": "\"School Timings\"",
+      "description": "Keeping in view the the severe weather conditions and as per the recent notification of the Govt. dated 10/06/2021, the school timings are hereby changed w.e.f. Monday,14th June,2021. The new timings are as follows;\r\nMonday till Friday (Early Year I,II,II"
+    },
+    {
+      "id": 53,
+      "title": "\"Mid Term Exams Syllabus & Date Sheet\"",
+      "description": "Dear Parents,\r\nThe syllabus and date sheet of Mid Term Exams is available in the file form on Diary option of portal.\r\nRegards,\r\nMukabbir Schools Management"
+    },
+    {
+      "id": 52,
+      "title": "\"Precautionery Measures\"",
+      "description": "It is intimated to please send your child with a proper hygiene kit.It should be consisting of a hand sanitizer+hand wash+mask.Every child should wear mask before coming to school.As we love our students and we want them safe,healthy and happy always.\r\nRe"
+    }
+  ],
+  "message": "Notifications"
+}

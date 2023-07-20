@@ -1,0 +1,59 @@
+name: mukabbir_schools
+description: school application
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  flutter_progress_hud: ^2.0.0
+  connectivity: ^3.0.6
+  fluttertoast: ^8.0.7
+  flutter_calendar_carousel: ^2.0.1
+  intl: ^0.17.0
+  #image_picker: ^0.6.6+5
+  image_picker: ^0.8.1+1
+  provider: ^5.0.0
+  http:
+  shared_preferences: ^2.0.6
+  cached_network_image: ^3.0.0
+  path_provider: ^2.0.2
+  date_format: ^2.0.2
+  flutter_downloader:
+  permission_handler: ^10.4.1
+  #open_file: ^3.2.1s
+  #flutter_local_notifications: ^6.0.0
+  dio:
+  firebase_core: ^2.0.1
+  firebase_messaging: any
+  overlay_support:
+  flutter_local_notifications: any
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+
+  uses-material-design: true
+
+  fonts:
+    - family: Quicksand
+      fonts:
+        - asset: assets/fonts/Quicksand/Quicksand-Bold.ttf
+        - asset: assets/fonts/Quicksand/Quicksand-Light.ttf
+        - asset: assets/fonts/Quicksand/Quicksand-Medium.ttf
+        - asset: assets/fonts/Quicksand/Quicksand-Regular.ttf
+        - asset: assets/fonts/Quicksand/Quicksand-SemiBold.ttf
+        - asset: assets/fonts/Quicksand/Quicksand-VariableFont_wght.ttf
+
+  assets:
+    - assets/images/
+    - assets/notifications.json

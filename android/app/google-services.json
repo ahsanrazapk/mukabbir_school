@@ -1,0 +1,126 @@
+{
+  "project_info": {
+    "project_number": "173843403770",
+    "project_id": "mukabbir-5e917",
+    "storage_bucket": "mukabbir-5e917.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:173843403770:android:a7cef3d95ccbd8dbdeca43",
+        "android_client_info": {
+          "package_name": "com.app.fcm_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "173843403770-h6tlcp4tdofe5s3krkrtunnj13epjpir.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.fcm_app",
+            "certificate_hash": "550baa61715a437122388504637e4b701f85b68f"
+          }
+        },
+        {
+          "client_id": "173843403770-6sl1ok4emnbbf6j5do5makrkdnac32qm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBntxCBjbc5p0r87DFd1BbHYdRyhvX2nrM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "173843403770-6sl1ok4emnbbf6j5do5makrkdnac32qm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "173843403770-posbgok24g2h003775fd8ktj7gi6n6cc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.app.mukabbirSchools"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:173843403770:android:192d418262955df1deca43",
+        "android_client_info": {
+          "package_name": "com.app.mukabbir_schools"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "173843403770-6sl1ok4emnbbf6j5do5makrkdnac32qm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBntxCBjbc5p0r87DFd1BbHYdRyhvX2nrM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "173843403770-6sl1ok4emnbbf6j5do5makrkdnac32qm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "173843403770-posbgok24g2h003775fd8ktj7gi6n6cc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.app.mukabbirSchools"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:173843403770:android:f18b28eb8ee1e902deca43",
+        "android_client_info": {
+          "package_name": "com.example.mukabbir_schools"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "173843403770-6sl1ok4emnbbf6j5do5makrkdnac32qm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBntxCBjbc5p0r87DFd1BbHYdRyhvX2nrM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "173843403770-6sl1ok4emnbbf6j5do5makrkdnac32qm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "173843403770-posbgok24g2h003775fd8ktj7gi6n6cc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.app.mukabbirSchools"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
