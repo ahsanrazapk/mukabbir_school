@@ -20,7 +20,7 @@ class ResultPage extends StatefulWidget {
 class _ResultPageState extends State<ResultPage> {
   TermListModel dropdownValue = termsList[0];
 
-  late ResultModel _studentResult;
+  ResultModel? _studentResult;
 
   bool isLoading = true;
 
@@ -37,7 +37,7 @@ class _ResultPageState extends State<ResultPage> {
   void initState() {
     _getToken().then((value) {
       tokenValue = value;
-      _fetchStudentResult(value, ['15']).then((res) => {
+      _fetchStudentResult(value, dropdownValue.key).then((res) => {
             _studentResultsResponseCheck(res),
           });
     });
@@ -53,53 +53,11 @@ class _ResultPageState extends State<ResultPage> {
   _studentResultsResponseCheck(ResultModel result) {
     setState(() {
       _studentResult = result;
+      _getTotalMarks();
+      _getTotalMarksObtained();
+      _getPercentage();
+      _getResultStatus();
     });
-
-    _getTotalMarks();
-    _getTotalMarksObtained();
-    _getPercentage();
-    _getResultStatus();
-  }
-
-  _getTotalMarks() {
-    grandTotalMarks = 0.0;
-    for (int i = 0; i < _studentResult.resultCard.resultDetail.length; i++) {
-      grandTotalMarks += _studentResult.resultCard.resultDetail[i].totalMarks.toDouble();
-    }
-  }
-
-  _getTotalMarksObtained() {
-    totalMarksObtained = 0.0;
-    for (int i = 0; i < _studentResult.resultCard.resultDetail.length; i++) {
-      totalMarksObtained += _studentResult.resultCard.resultDetail[i].obtainMarks.toDouble();
-    }
-    print(totalMarksObtained);
-  }
-
-  _getPercentage() {
-    percentage = 0.0;
-    percentage = ((totalMarksObtained / grandTotalMarks) * 100);
-  }
-
-  _getResultStatus() {
-    if (percentage >= 50)
-      resultStatus = 'Passed';
-    else
-      resultStatus = 'Failed';
-  }
-
-  _setTermValue(String term) {
-    if (term == 'First Term') {
-      termValue = 1;
-    } else if (term == 'Second Term') {
-      termValue = 2;
-    } else if (term == 'Mid Term') {
-      termValue = 3;
-    } else if (term == 'Final Term') {
-      termValue = 4;
-    }
-
-    setState(() {});
   }
 
   @override
@@ -115,8 +73,7 @@ class _ResultPageState extends State<ResultPage> {
               top: -10,
               left: 0,
               right: 0,
-              child: Image.asset('assets/images/top_circle.png',
-                  width: MediaQuery.of(context).size.width * 0.8, height: 70),
+              child: Image.asset('assets/images/top_circle.png', width: MediaQuery.of(context).size.width * 0.8, height: 70),
             ),
 
             Positioned(
@@ -171,8 +128,7 @@ class _ResultPageState extends State<ResultPage> {
                           shrinkWrap: true,
                           primary: true,
                           children: [
-                            Text(AppStrings.selectYourTerm,
-                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                            Text(AppStrings.selectYourTerm, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
 
                             SizedBox(
                               height: 16,
@@ -200,10 +156,10 @@ class _ResultPageState extends State<ResultPage> {
                                     dropdownValue = newValue!;
                                     isLoading = true;
                                   });
-                                  List<String> term = [];
+                                  /*List<String> term = [];
                                   if (dropdownValue.key == '11') {
-                                    term.add('15');
-                                    term.add('16');
+                                   */ /* term.add('15');
+                                    term.add('16');*/ /*
                                     term.add('11');
                                   } else if (dropdownValue.key == '12') {
                                     term.add('17');
@@ -215,8 +171,8 @@ class _ResultPageState extends State<ResultPage> {
                                     term.add('14');
                                   } else {
                                     term.add(dropdownValue.key);
-                                  }
-                                  _fetchStudentResult(tokenValue, term).then((res) => {
+                                  }*/
+                                  _fetchStudentResult(tokenValue, dropdownValue.key).then((res) => {
                                         _studentResultsResponseCheck(
                                           res,
                                         )
@@ -234,7 +190,7 @@ class _ResultPageState extends State<ResultPage> {
                               ),
                             ),
                             SizedBox(height: 16.0),
-                            _studentResult.type
+                            _studentResult?.type ?? false
                                 ? Column(
                                     children: [
                                       _resultTableHeadings(),
@@ -242,17 +198,16 @@ class _ResultPageState extends State<ResultPage> {
                                       SizedBox(height: 16.0),
 
                                       //subject results list view
-                                      ListView.builder(
+                                      /*ListView.builder(
                                         scrollDirection: Axis.vertical,
-                                        itemCount: _studentResult.resultCard.resultDetail.length,
+                                        itemCount: _studentResult?.resultCard?.length,
                                         shrinkWrap: true,
                                         primary: false,
                                         itemBuilder: (BuildContext context, int index) {
-                                          print(count += _studentResult.resultCard.resultDetail[index].obtainMarks);
                                           String? title;
                                           termsList.forEach((element) {
                                             if (element.key ==
-                                                _studentResult.resultCard.resultDetail[index].term.toString()) {
+                                                _studentResult?.resultCard[index].term.toString()) {
                                               title = element.value;
                                               return;
                                             }
@@ -263,8 +218,8 @@ class _ResultPageState extends State<ResultPage> {
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 if (index == 0 ||
-                                                    _studentResult.resultCard.resultDetail[index].term !=
-                                                        _studentResult.resultCard.resultDetail[index - 1].term)
+                                                    _studentResult?.resultCard.resultDetail[index].term !=
+                                                        _studentResult?.resultCard.resultDetail[index - 1].term)
                                                   Padding(
                                                     padding: const EdgeInsets.only(top: 20),
                                                     child: Text(title!,
@@ -277,7 +232,7 @@ class _ResultPageState extends State<ResultPage> {
                                                     child: Row(children: [
                                                       Expanded(
                                                         child: Text(
-                                                            _studentResult.resultCard.resultDetail[index].subjectName,
+                                                            _studentResult?.resultCard.resultDetail[index].subjectName ?? '',
                                                             style: TextStyle(
                                                                 fontSize: 13,
                                                                 fontWeight: FontWeight.normal,
@@ -287,8 +242,8 @@ class _ResultPageState extends State<ResultPage> {
                                                         child: Padding(
                                                             padding: EdgeInsets.only(left: 16.0),
                                                             child: Text(
-                                                                _studentResult.resultCard.resultDetail[index].totalMarks
-                                                                    .toString(),
+                                                                _studentResult?.resultCard.resultDetail[index].totalMarks
+                                                                    .toString() ?? '',
                                                                 style: TextStyle(
                                                                     fontSize: 13,
                                                                     fontWeight: FontWeight.normal,
@@ -299,8 +254,8 @@ class _ResultPageState extends State<ResultPage> {
                                                               padding: EdgeInsets.only(left: 16.0),
                                                               child: Text(
                                                                 _studentResult
-                                                                    .resultCard.resultDetail[index].obtainMarks
-                                                                    .toString(),
+                                                                    ?.resultCard.resultDetail[index].obtainMarks
+                                                                    .toString() ?? '',
                                                                 style: TextStyle(
                                                                     fontSize: 13,
                                                                     fontWeight: FontWeight.normal,
@@ -311,7 +266,7 @@ class _ResultPageState extends State<ResultPage> {
                                             ),
                                           );
                                         },
-                                      ),
+                                      ),*/
 
                                       SizedBox(height: 8.0),
 
@@ -327,16 +282,12 @@ class _ResultPageState extends State<ResultPage> {
                                             Expanded(
                                               child: Container(
                                                   padding: const EdgeInsets.all(6.0),
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.orange,
-                                                      borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                                                  decoration:
+                                                      BoxDecoration(color: Colors.orange, borderRadius: BorderRadius.all(Radius.circular(4.0))),
                                                   child: Center(
                                                     child: Text(
                                                       "Marks",
-                                                      style: TextStyle(
-                                                          fontSize: 13,
-                                                          fontWeight: FontWeight.normal,
-                                                          color: Colors.white),
+                                                      style: TextStyle(fontSize: 13, fontWeight: FontWeight.normal, color: Colors.white),
                                                     ),
                                                   )),
                                             ),
@@ -371,10 +322,7 @@ class _ResultPageState extends State<ResultPage> {
                                                       )),
                                                   child: Center(
                                                     child: Text("Status",
-                                                        style: TextStyle(
-                                                            fontSize: 13,
-                                                            fontWeight: FontWeight.normal,
-                                                            color: Colors.white)),
+                                                        style: TextStyle(fontSize: 13, fontWeight: FontWeight.normal, color: Colors.white)),
                                                   )),
                                             ),
                                           ],
@@ -396,12 +344,8 @@ class _ResultPageState extends State<ResultPage> {
                                                     borderRadius: BorderRadius.all(Radius.circular(8.0)),
                                                   ),
                                                   child: Center(
-                                                      child: Text(
-                                                          "${totalMarksObtained.toStringAsFixed(1)} / ${grandTotalMarks.toStringAsFixed(1)}",
-                                                          style: TextStyle(
-                                                              fontSize: 13,
-                                                              fontWeight: FontWeight.bold,
-                                                              color: Colors.orange)))),
+                                                      child: Text("${totalMarksObtained.toInt()} / ${grandTotalMarks.toInt()}",
+                                                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.orange)))),
                                             ),
                                             SizedBox(width: 16.0),
                                             Expanded(
@@ -514,31 +458,67 @@ class _ResultPageState extends State<ResultPage> {
     );
   }
 
-  /*_getResult() {
+  _getPercentage() {
+    percentage = 0.0;
+    percentage = ((totalMarksObtained / grandTotalMarks) * 100);
+  }
 
-    List<Course> coursesList = [];
+  _getResultStatus() {
+    if (percentage >= 50)
+      resultStatus = 'Passed';
+    else
+      resultStatus = 'Failed';
+  }
 
-    coursesList.add(Course(subject: 'English', subTotalMarks: '100', subTotalObjMarks: '89'));
-    coursesList.add(Course(subject: 'Urdu', subTotalMarks: '100', subTotalObjMarks: '89'));
-    coursesList.add(Course(subject: 'Math', subTotalMarks: '100', subTotalObjMarks: '89'));
-    coursesList.add(Course(subject: 'Arts', subTotalMarks: '100', subTotalObjMarks: '89'));
-    coursesList.add(Course(subject: 'Pre-Writing', subTotalMarks: '100', subTotalObjMarks: '89'));
+  _getTotalMarks() {
+    grandTotalMarks = 0.0;
+    int length = _studentResult?.resultCard?.length ?? 0;
+    for (int i = 0; i < length; i++) {
+      grandTotalMarks += _studentResult?.resultCard![i].totalMarks?.toDouble() ?? 0;
+    }
+    if(dropdownValue.key == '11' || dropdownValue.key == '12' || dropdownValue.key == '14'){
+      grandTotalMarks *= 3;
+    }
+  }
 
-    _studentResult = ResultModel(
-        totalMarks: '150',
-        totalMarksObt: '141',
-        percentage: '94.0%',
-        status: 'Passed',
-        coursesList: coursesList
-    );
-  }*/
+  _getTotalMarksObtained() {
+    totalMarksObtained = 0.0;
+    int length = _studentResult?.resultCard?.length ?? 0;
+    for (int i = 0; i < length; i++) {
+      if (dropdownValue.key == '11') {
+        totalMarksObtained += ((_studentResult?.resultCard?[i].obtainedMarks?.i11?.marks ?? 0.0) +
+            (_studentResult?.resultCard?[i].obtainedMarks?.i15?.marks ?? 0.0) +
+            ((_studentResult?.resultCard?[i].obtainedMarks?.i16?.marks ?? 0.0)));
+      } else if (dropdownValue.key == '12') {
+        totalMarksObtained += ((_studentResult?.resultCard?[i].obtainedMarks?.i12?.marks ?? 0.0) +
+            (_studentResult?.resultCard?[i].obtainedMarks?.i17?.marks ?? 0.0) +
+            ((_studentResult?.resultCard?[i].obtainedMarks?.i18?.marks ?? 0.0)));
+      } else if (dropdownValue.key == '14') {
+        totalMarksObtained += ((_studentResult?.resultCard?[i].obtainedMarks?.i14?.marks ?? 0.0) +
+            (_studentResult?.resultCard?[i].obtainedMarks?.i19?.marks ?? 0.0) +
+            ((_studentResult?.resultCard?[i].obtainedMarks?.i20?.marks ?? 0.0)));
+      } else if (dropdownValue.key == '15') {
+        totalMarksObtained += ((_studentResult?.resultCard?[i].obtainedMarks?.i15?.marks ?? 0.0));
+      } else if (dropdownValue.key == '16') {
+        totalMarksObtained += ((_studentResult?.resultCard?[i].obtainedMarks?.i16?.marks ?? 0.0));
+      } else if (dropdownValue.key == '17') {
+        totalMarksObtained += ((_studentResult?.resultCard?[i].obtainedMarks?.i17?.marks ?? 0.0));
+      } else if (dropdownValue.key == '18') {
+        totalMarksObtained += ((_studentResult?.resultCard?[i].obtainedMarks?.i18?.marks ?? 0.0));
+      } else if (dropdownValue.key == '19') {
+        totalMarksObtained += ((_studentResult?.resultCard?[i].obtainedMarks?.i19?.marks ?? 0.0));
+      } else if (dropdownValue.key == '20') {
+        totalMarksObtained += ((_studentResult?.resultCard?[i].obtainedMarks?.i20?.marks ?? 0.0));
+      }
+    }
+    print(totalMarksObtained);
+  }
 
-  Future<ResultModel> _fetchStudentResult(String token, List<String> data) async {
+  Future<ResultModel> _fetchStudentResult(String token, String data) async {
     print(data);
     print('sending token: $token');
     final response = await http.post(Uri.parse('${AppConstants.baseURL}/student-resultcard'),
-        headers: {'Authorization': 'Bearer $token', HttpHeaders.contentTypeHeader: 'application/json'},
-        body: json.encode({"term": data}));
+        headers: {'Authorization': 'Bearer $token', HttpHeaders.contentTypeHeader: 'application/json'}, body: json.encode({"term": data}));
 
     print(response.statusCode);
 
@@ -547,12 +527,7 @@ class _ResultPageState extends State<ResultPage> {
         isLoading = false;
       });
 
-      return ResultModel(
-          status: 200,
-          type: false,
-          resultCard: ResultCard(
-              studentName: '', campus: '', grade: '', section: '', sessionName: '', term: '', resultDetail: []),
-          message: 'Data not found');
+      return ResultModel(status: 200, type: false, resultCard: null, message: 'Data not found');
     }
 
     if (response.statusCode == 200) {
@@ -562,11 +537,6 @@ class _ResultPageState extends State<ResultPage> {
 
       print('student result response: ${jsonDecode(response.body)}');
       ResultModel result = ResultModel.fromJson(jsonDecode(response.body));
-      result.resultCard.resultDetail.where((element) => element.term == 11).forEach((element) {
-        print(element.totalMarks);
-        print(element.subjectName);
-      });
-      result.resultCard.resultDetail.sort((a, b) => a.term!.compareTo(b.term!));
       return result;
     } else {
       setState(() => isLoading = false);

@@ -17,17 +17,22 @@ class ResultModel {
 */
 
 class ResultModel {
-  late int status;
-  late bool type;
-  late ResultCard resultCard;
-  late String message;
+  int? status;
+  bool? type;
+  List<ResultCard>? resultCard;
+  String? message;
 
-  ResultModel({required this.status, required this.type, required this.resultCard, required this.message});
+  ResultModel({this.status, this.type, this.resultCard, this.message});
 
   ResultModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     type = json['type'];
-    resultCard = ResultCard.fromJson(json['result_card']);
+    if (json['result_card'] != null) {
+      resultCard = <ResultCard>[];
+      json['result_card'].forEach((v) {
+        resultCard!.add(new ResultCard.fromJson(v));
+      });
+    }
     message = json['message'];
   }
 
@@ -36,9 +41,12 @@ class ResultModel {
     data['status'] = this.status;
     data['type'] = this.type;
     if (this.resultCard != null) {
-      data['result_card'] = this.resultCard.toJson();
+      data['result_card'] = this.resultCard!.map((v) => v.toJson()).toList();
     }
     data['message'] = this.message;
     return data;
   }
 }
+
+
+

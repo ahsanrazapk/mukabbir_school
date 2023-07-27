@@ -3,6 +3,9 @@ import 'package:mukabbir_schools/screen/login/login_screen.dart';
 import 'package:mukabbir_schools/utils/app_constants.dart';
 import 'package:mukabbir_schools/utils/color_constants.dart';
 
+import '../../utils/shared_prefs.dart';
+import '../loading/loading_screen.dart';
+
 class SplashScreen extends StatefulWidget {
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -19,13 +22,23 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     controller = AnimationController(duration: const Duration(milliseconds: 4000), vsync: this);
     animation = CurvedAnimation(parent: controller, curve: Curves.easeIn);
 
-    animation.addStatusListener((status) {
+    animation.addStatusListener((status) async {
       if (status == AnimationStatus.completed) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => LoginScreen(),
-          ),
-        );
+        bool isExist = await SharedPref.checkIfKeyExistsInSharedPref(AppConstants.token);
+
+        if (isExist) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => LoadingScreen(),
+            ),
+          );
+        } else {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => LoginScreen(),
+            ),
+          );
+        }
       } else if (status == AnimationStatus.dismissed) {
         controller.forward();
       }
@@ -54,8 +67,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                 top: -10,
                 left: 0,
                 right: 0,
-                child: Image.asset('assets/images/top_circle.png',
-                    width: MediaQuery.of(context).size.width * 0.8, height: 70),
+                child: Image.asset('assets/images/top_circle.png', width: MediaQuery.of(context).size.width * 0.8, height: 70),
               ),
 
               Positioned(
