@@ -456,7 +456,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Card(
             elevation: 4.0,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(6.0),
               child: Row(
                 children: [
                   //Icon(Icons.person, color: ColorConstants.blackColor),
@@ -494,37 +494,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _circleImage(String image) {
+    print(image);
     return InkWell(
       onTap: () {
-
-        //take picture from camera or from gallery
         _showPicker(context);
-
       },
-      child: _imageFile != null ? Container(
-        width: 70.0,
-        height: 70.0,
-        decoration: new BoxDecoration(
-          shape: BoxShape.circle,
-          image: new DecorationImage(
-            fit: BoxFit.fill,
-            image: FileImage(File(_imageFile!.path)),),
-        ),) : Container(
-        width: 90.0,
-        height: 90.0,
-        decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            image: DecorationImage(
-              fit: BoxFit.contain,
-              image: NetworkImage(image)
-            ),
-        ),
-        /*child: CachedNetworkImage(
-          imageUrl: image,
-          placeholder: (context, url) => CupertinoActivityIndicator(),
-          errorWidget: (context, url, error) => Icon(Icons.error),
-          fit: BoxFit.contain,
-        ),*/
+      child: _imageFile != null ? CircleAvatar(
+        radius: 70,
+        backgroundImage: FileImage(File(_imageFile!.path)),
+      ) :
+      CircleAvatar(
+        radius: 70,
+        backgroundImage: CachedNetworkImageProvider(image),
       ),
     );
   }

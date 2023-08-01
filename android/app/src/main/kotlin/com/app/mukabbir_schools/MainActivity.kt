@@ -1,4 +1,4 @@
-package com.app.mukabbir_schools
+package com.pixelpk.mukabbirschool
 
 import io.flutter.embedding.android.FlutterActivity
 

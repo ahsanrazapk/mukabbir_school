@@ -6,10 +6,10 @@ import 'package:mukabbir_schools/model/image_data.dart';
 class GalleryImageItem extends StatelessWidget {
   const GalleryImageItem({
     Key? key,
-    required this.item,
+     this.item,
   }) : super(key: key);
 
-  final ImageData item;
+  final ImageData? item;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class GalleryImageItem extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8.0),
         child: CachedNetworkImage(
-          imageUrl: item.image,
+          imageUrl: item?.image ?? '',
           placeholder: (context, url) => CupertinoActivityIndicator(),
           errorWidget: (context, url, error) => Icon(Icons.error),
           fit: BoxFit.contain,

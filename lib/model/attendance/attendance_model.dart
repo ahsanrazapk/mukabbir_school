@@ -4,13 +4,13 @@ import 'package:mukabbir_schools/model/attendance/total_leave.dart';
 import 'package:mukabbir_schools/model/attendance/total_present.dart';
 
 class AttendanceModel {
-  late int status;
-  late bool type;
-  late List<Attendance> attendance;
-  late List<TotalPresent> totalPresent;
-  late List<TotalAbsent> totalAbsent;
-  late List<TotalLeave> totalLeave;
-  late String message;
+   int? status;
+   bool? type;
+   List<Attendance>? attendance;
+   List<TotalPresent>? totalPresent;
+   List<TotalAbsent>? totalAbsent;
+   List<TotalLeave>? totalLeave;
+   String? message;
 
   AttendanceModel(
       {required this.status,
@@ -27,25 +27,25 @@ class AttendanceModel {
     if (json['attendance'] != null) {
       attendance =[];
       json['attendance'].forEach((v) {
-        attendance.add(new Attendance.fromJson(v));
+        attendance?.add(new Attendance.fromJson(v));
       });
     }
     if (json['total_present'] != null) {
       totalPresent = [];
       json['total_present'].forEach((v) {
-        totalPresent.add(new TotalPresent.fromJson(v));
+        totalPresent?.add(new TotalPresent.fromJson(v));
       });
     }
     if (json['total_absent'] != null) {
       totalAbsent = [];
       json['total_absent'].forEach((v) {
-        totalAbsent.add(new TotalAbsent.fromJson(v));
+        totalAbsent?.add(new TotalAbsent.fromJson(v));
       });
     }
     if (json['total_leave'] != null) {
       totalLeave = [];
       json['total_leave'].forEach((v) {
-        totalLeave.add(new TotalLeave.fromJson(v));
+        totalLeave?.add(new TotalLeave.fromJson(v));
       });
     }
     message = json['message'];
@@ -56,16 +56,16 @@ class AttendanceModel {
     data['status'] = this.status;
     data['type'] = this.type;
     if (this.attendance != null) {
-      data['attendance'] = this.attendance.map((v) => v.toJson()).toList();
+      data['attendance'] = this.attendance?.map((v) => v.toJson()).toList();
     }
     if (this.totalPresent != null) {
-      data['total_present'] = this.totalPresent.map((v) => v.toJson()).toList();
+      data['total_present'] = this.totalPresent?.map((v) => v.toJson()).toList();
     }
     if (this.totalAbsent != null) {
-      data['total_absent'] = this.totalAbsent.map((v) => v.toJson()).toList();
+      data['total_absent'] = this.totalAbsent?.map((v) => v.toJson()).toList();
     }
     if (this.totalLeave != null) {
-      data['total_leave'] = this.totalLeave.map((v) => v.toJson()).toList();
+      data['total_leave'] = this.totalLeave?.map((v) => v.toJson()).toList();
     }
     data['message'] = this.message;
     return data;

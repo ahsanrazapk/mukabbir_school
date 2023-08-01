@@ -76,8 +76,8 @@ class Utils {
     return filePath;
   }
 
-  static DateTime convertDateFromString(String strDate) {
-    DateTime todayDate = DateTime.parse(strDate);
+  static DateTime convertDateFromString(String? strDate) {
+    DateTime todayDate = DateTime.parse(strDate ?? '');
     print(todayDate);
     print(formatDate(todayDate, [yyyy, '-', mm, '-', dd]));
 

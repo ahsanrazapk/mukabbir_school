@@ -82,3 +82,11 @@ class TermWithMarks {
 
   TermWithMarks(this.marks, this.term);
 }
+
+class SubjectWithMarks {
+  int? marks;
+  String? subject;
+  int? total;
+
+  SubjectWithMarks(this.marks, this.subject, this.total);
+}

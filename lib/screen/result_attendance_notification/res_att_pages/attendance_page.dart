@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:mukabbir_schools/components/back_widget.dart';
@@ -11,55 +12,35 @@ import 'package:mukabbir_schools/utils/shared_prefs.dart';
 import 'package:http/http.dart' as http;
 import 'package:mukabbir_schools/utils/utils.dart';
 
-
-
 class AttendancePage extends StatefulWidget {
-
   @override
   _AttendancePageState createState() => _AttendancePageState();
 }
 
 class _AttendancePageState extends State<AttendancePage> {
-
   DateTime _currentDate = DateTime.now();
-  late DateTime startCalendarDate;
+  DateTime? startCalendarDate;
 
   double circleSize = 16.0;
   double markedDateCircleSize = 6.0;
 
-  late AttendanceModel _attendanceModel;
+  AttendanceModel? _attendanceModel;
   bool isLoading = true;
-  late String tokenValue;
+  String? tokenValue;
 
   //attendance response code
   //0 is for absent
   //1 is for present
   //2 is fo leave
 
-
   @override
   void initState() {
-
     DateTime date = DateTime.now();
     startCalendarDate = date.subtract(Duration(days: 1));
-
-    _getToken().then((value) {
-
-      ///temporarily commented, uncomment it later
-      //tokenValue = value;
-      tokenValue = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvcG9ydGFsLm11a2FiYmlyc2Nob29scy5lZHUucGtcL2FwaVwvbG9naW4iLCJpYXQiOjE2MjQ5NzU1MDgsIm5iZiI6MTYyNDk3NTUwOCwianRpIjoicVRKZ21XTzY4dXFMUDRYbiIsInN1YiI6MjM2MywicHJ2IjoiODdlMGFmMWVmOWZkMTU4MTJmZGVjOTcxNTNhMTRlMGIwNDc1NDZhYSJ9.2IdBay83maIpKubJbGeUO2JsuNe2BM3frpqjtLIQK3U';
-
-      _fetchAttendance(value, '06').then((res) => {
-        _attendanceModel = res,
-
-      }).then((value) => {
-        _addAttendanceOnCalendar(),
-      });
-
-
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
+      tokenValue = await _getToken();
+      _fetchAttendance(tokenValue!, date.month.toString()).then((res) => {_attendanceModel = res, _addAttendanceOnCalendar()});
     });
-
-
     super.initState();
   }
 
@@ -71,42 +52,35 @@ class _AttendancePageState extends State<AttendancePage> {
   EventList<Event> _markedDateMap = new EventList<Event>(events: {});
 
   _addAttendanceOnCalendar() {
-
-    for(int i=0; i<_attendanceModel.attendance.length; i++) {
-      DateTime dt = Utils.convertDateFromString(_attendanceModel.attendance[i].attendanceDate);
+    _markedDateMap.clear();
+    int length = _attendanceModel?.attendance?.length ?? 0;
+    for (int i = 0; i < length; i++) {
+      DateTime dt = Utils.convertDateFromString(_attendanceModel?.attendance?[i].attendanceDate);
       _markedDateMap.add(
           dt,
           new Event(
             date: dt,
             dot: Container(
-              decoration: BoxDecoration(
-                  color: _getAttendanceColor(_attendanceModel.attendance[i].attendanceStatus),
-                  shape: BoxShape.circle
-              ),
+              decoration: BoxDecoration(color: _getAttendanceColor(_attendanceModel?.attendance?[i].attendanceStatus), shape: BoxShape.circle),
               margin: EdgeInsets.symmetric(horizontal: 1.0),
               height: markedDateCircleSize,
               width: markedDateCircleSize,
             ),
-          )
-      );
+          ));
     }
-
   }
 
-  Color _getAttendanceColor(String attendanceStatus) {
-    if(attendanceStatus == '0') {
+  Color _getAttendanceColor(String? attendanceStatus) {
+    if (attendanceStatus == '0') {
       return Colors.red;
-    }
-    else if(attendanceStatus == '1') {
+    } else if (attendanceStatus == '1') {
       return Colors.green;
-    }
-    else if(attendanceStatus == '2') {
+    } else if (attendanceStatus == '2') {
       return Colors.yellow;
     }
 
     return Colors.green;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +89,6 @@ class _AttendancePageState extends State<AttendancePage> {
       body: SafeArea(
         child: Stack(
           children: [
-
             //BgImageContainer(image: AppConstants.attendanceBg),
 
             Positioned(
@@ -136,16 +109,17 @@ class _AttendancePageState extends State<AttendancePage> {
               bottom: -20,
               left: 0,
               right: 0,
-              child: Image.asset('assets/images/attendance_bottom_bg.jpg', width: MediaQuery.of(context).size.width,
-                fit: BoxFit.cover,),
+              child: Image.asset(
+                'assets/images/attendance_bottom_bg.jpg',
+                width: MediaQuery.of(context).size.width,
+                fit: BoxFit.cover,
+              ),
             ),
-
 
             Padding(
               padding: EdgeInsets.all(16.0),
               child: Column(
                 children: [
-
                   //back arrow
                   BackWidget(),
 
@@ -156,49 +130,42 @@ class _AttendancePageState extends State<AttendancePage> {
                   _displayCalendar(),
 
                   _attendanceStatusRow(),
-
                 ],
               ),
             ),
-
-
           ],
         ),
       ),
     );
   }
 
-
   Widget _displayCalendar() {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.6,
-      margin: EdgeInsets.symmetric(horizontal: 16.0),
+      width: MediaQuery.of(context).size.width * 0.9,
+      margin: EdgeInsets.symmetric(horizontal: 10.0),
       //color: Colors.blue,
       child: CalendarCarousel<Event>(
-        onDayPressed: (DateTime date, List<Event> events) {
-
-        },
         weekendTextStyle: TextStyle(
           color: Colors.black,
         ),
+        onCalendarChanged: (date) {
+          _fetchAttendance(tokenValue!, date.month.toString()).then((res) => {_attendanceModel = res, _addAttendanceOnCalendar()});
+        },
         thisMonthDayBorderColor: Colors.white,
-//      weekDays: null, /// for pass null when you do not want to render weekDays
-//      headerText: Container( /// Example for rendering custom header
-//        child: Text('Custom Header'),
-//      ),
-        //minSelectedDate: DateTime.now(),
-        //minSelectedDate: startCalendarDate,
         weekdayTextStyle: TextStyle(color: Colors.black),
         weekFormat: false,
         height: MediaQuery.of(context).size.height * 0.42,
         selectedDateTime: _currentDate,
         todayButtonColor: ColorConstants.whiteColor,
-        todayTextStyle: TextStyle(color: Colors.black,),
+        todayTextStyle: TextStyle(
+          color: Colors.black,
+        ),
         todayBorderColor: Colors.grey,
         selectedDayBorderColor: ColorConstants.primaryColor,
         selectedDayButtonColor: ColorConstants.primaryColor,
         daysHaveCircularBorder: false,
         markedDatesMap: _markedDateMap,
+
         /// null for not rendering any border, true for circular border, false for rectangular border
       ),
     );
@@ -209,7 +176,6 @@ class _AttendancePageState extends State<AttendancePage> {
       height: 42,
       child: Row(
         children: [
-
           Expanded(
             child: Card(
               elevation: 4.0,
@@ -222,37 +188,34 @@ class _AttendancePageState extends State<AttendancePage> {
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
-
                     Container(
                       width: circleSize,
                       height: circleSize,
-                      decoration: BoxDecoration(
-                          color: Colors.green,
-                          shape: BoxShape.circle
-                      ),
+                      decoration: BoxDecoration(color: Colors.green, shape: BoxShape.circle),
                     ),
-
                     SizedBox(width: 6),
-
                     Container(
                       width: 1.0,
                       height: double.maxFinite,
                       color: Colors.black,
                     ),
-
                     SizedBox(width: 6),
-
                     Expanded(
-                      child: Text('Preset', style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal, color: Colors.green),
-                        overflow: TextOverflow.ellipsis, maxLines: 1,),
+                      child: Text(
+                        'Preset',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal, color: Colors.green),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
                     ),
-
                   ],
                 ),
               ),
             ),
           ),
-          SizedBox(width: 4.0,),
+          SizedBox(
+            width: 4.0,
+          ),
           Expanded(
             child: Card(
               elevation: 4.0,
@@ -265,37 +228,34 @@ class _AttendancePageState extends State<AttendancePage> {
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
-
                     Container(
                       width: circleSize,
                       height: circleSize,
-                      decoration: BoxDecoration(
-                          color: Colors.yellow,
-                          shape: BoxShape.circle
-                      ),
+                      decoration: BoxDecoration(color: Colors.yellow, shape: BoxShape.circle),
                     ),
-
                     SizedBox(width: 6),
-
                     Container(
                       width: 1.0,
                       height: double.maxFinite,
                       color: Colors.black,
                     ),
-
                     SizedBox(width: 6),
-
                     Expanded(
-                      child: Text('Leave', style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal, color: Colors.yellow),
-                        overflow: TextOverflow.ellipsis, maxLines: 1,),
+                      child: Text(
+                        'Leave',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal, color: Colors.yellow),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
                     ),
-
                   ],
                 ),
               ),
             ),
           ),
-          SizedBox(width: 4.0,),
+          SizedBox(
+            width: 4.0,
+          ),
           Expanded(
             child: Card(
               elevation: 4.0,
@@ -308,14 +268,10 @@ class _AttendancePageState extends State<AttendancePage> {
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
-
                     Container(
                       width: circleSize,
                       height: circleSize,
-                      decoration: BoxDecoration(
-                          color: Colors.red,
-                          shape: BoxShape.circle
-                      ),
+                      decoration: BoxDecoration(color: Colors.red, shape: BoxShape.circle),
                     ),
                     SizedBox(width: 6),
                     Container(
@@ -325,37 +281,33 @@ class _AttendancePageState extends State<AttendancePage> {
                     ),
                     SizedBox(width: 6),
                     Expanded(
-                      child: Text('Absent', style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal, color: Colors.red),
-                        overflow: TextOverflow.ellipsis, maxLines: 1,),
+                      child: Text(
+                        'Absent',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal, color: Colors.red),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
                     ),
-
                   ],
                 ),
               ),
             ),
           ),
-
         ],
       ),
     );
   }
 
   Future<AttendanceModel> _fetchAttendance(String token, String month) async {
-
-    final response = await http.post(
-        Uri.parse('${AppConstants.baseURL}/student-attendance'),
-        headers: {
-          'Authorization': 'Bearer $token',
-        },
-        body: {
-          'month': '06',
-        }
-    );
+    final response = await http.post(Uri.parse('${AppConstants.baseURL}/student-attendance'), headers: {
+      'Authorization': 'Bearer $token',
+    }, body: {
+      'month': month,
+    });
 
     print('attendance response: ${response.body}');
 
-    if(response.body.contains('false')) {
-
+    if (response.body.contains('false')) {
       setState(() {
         isLoading = false;
       });
@@ -365,7 +317,6 @@ class _AttendancePageState extends State<AttendancePage> {
 
     print('request: ${response.request?.headers.toString()}');
     if (response.statusCode == 200) {
-
       // If the server did return a 200 OK response,
       // then parse the JSON.
       setState(() {
@@ -374,7 +325,6 @@ class _AttendancePageState extends State<AttendancePage> {
 
       return AttendanceModel.fromJson(jsonDecode(response.body));
     } else {
-
       // If the server did not return a 200 OK response,
       // then throw an exception.
       setState(() {
@@ -384,8 +334,4 @@ class _AttendancePageState extends State<AttendancePage> {
       throw Exception('Failed to fetch attendance data ${response.body}');
     }
   }
-
-
-
 }
-
