@@ -1,6 +1,6 @@
 # mukabbir_schools
 
-school application
+school management system
 
 ## Getting Started
 
